@@ -19,8 +19,8 @@ type ModerationLogDocument = Omit<ModerationLog, "id" | "targetId"> & {
   targetId: ObjectId;
 };
 
-const collection = () =>
-  getMongoClient().db(databaseName).collection<ModerationLogDocument>("moderation_logs");
+const collection = async () =>
+  (await getMongoClient()).db(databaseName).collection<ModerationLogDocument>("moderation_logs");
 
 export async function recordModerationAction(input: {
   action: ModerationAction;
@@ -31,7 +31,7 @@ export async function recordModerationAction(input: {
     throw new Error("INVALID_MODERATION_TARGET_ID");
   }
 
-  await collection().insertOne({
+  await (await collection()).insertOne({
     _id: new ObjectId(),
     action: input.action,
     targetId: new ObjectId(input.targetId),
@@ -41,7 +41,7 @@ export async function recordModerationAction(input: {
 }
 
 export async function getRecentModerationLogs(): Promise<ModerationLog[]> {
-  const documents = await collection()
+  const documents = await (await collection())
     .find({})
     .sort({ createdAt: -1 })
     .limit(100)

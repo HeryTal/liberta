@@ -18,15 +18,15 @@ type ReportDocument = Omit<Report, "id" | "publicationId"> & {
   publicationId: ObjectId;
 };
 
-const collection = () =>
-  getMongoClient().db(databaseName).collection<ReportDocument>("reports");
+const collection = async () =>
+  (await getMongoClient()).db(databaseName).collection<ReportDocument>("reports");
 
 export async function createReport(input: {
   publicationId: string;
   reason: ReportReason;
   details: string;
 }): Promise<void> {
-  await collection().insertOne({
+  await (await collection()).insertOne({
     _id: new ObjectId(),
     publicationId: new ObjectId(input.publicationId),
     reason: input.reason,
@@ -37,7 +37,7 @@ export async function createReport(input: {
 }
 
 export async function getPendingReports(): Promise<Report[]> {
-  const documents = await collection()
+  const documents = await (await collection())
     .find({ status: "pending" })
     .sort({ createdAt: 1 })
     .limit(100)
@@ -58,7 +58,7 @@ export async function markReportReviewed(id: string): Promise<void> {
     throw new Error("INVALID_REPORT_ID");
   }
 
-  await collection().updateOne(
+  await (await collection()).updateOne(
     { _id: new ObjectId(id), status: "pending" },
     { $set: { status: "reviewed" } },
   );

@@ -5,7 +5,7 @@ import { ObjectId } from "mongodb";
 type PendingDocument = Omit<Publication, "id"> & { _id: ObjectId };
 
 export async function getPendingPublications(): Promise<Publication[]> {
-  const documents = await getMongoClient()
+  const documents = await (await getMongoClient())
     .db(databaseName)
     .collection<PendingDocument>("publications")
     .find({ status: "pending_review" })
@@ -34,7 +34,7 @@ export async function updatePublicationStatus(
     throw new Error("PUBLICATION_ID_INVALID");
   }
 
-  await getMongoClient()
+  await (await getMongoClient())
     .db(databaseName)
     .collection("publications")
     .updateOne(

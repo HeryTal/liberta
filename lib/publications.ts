@@ -20,8 +20,8 @@ type PublicationDocument = Omit<Publication, "id"> & {
   _id: ObjectId;
 };
 
-const collection = () =>
-  getMongoClient()
+const collection = async () =>
+  (await getMongoClient())
     .db(databaseName)
     .collection<PublicationDocument>("publications");
 
@@ -54,7 +54,7 @@ export async function getPublishedPublications(options?: {
     filter.$or = [{ title: pattern }, { content: pattern }, { pseudonym: pattern }];
   }
 
-  const publicationsCollection = collection();
+  const publicationsCollection = await collection();
   const [total, documents] = await Promise.all([
     publicationsCollection.countDocuments(filter),
     publicationsCollection
@@ -81,7 +81,7 @@ export async function getPublishedPublication(
     return null;
   }
 
-  const document = await collection().findOne({
+  const document = await (await collection()).findOne({
     _id: new ObjectId(id),
     status: "published",
   });

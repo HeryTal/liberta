@@ -42,7 +42,7 @@ export async function submitPublication(
   }
 
   try {
-    await getMongoClient()
+    await (await getMongoClient())
       .db(databaseName)
       .collection("publications")
       .insertOne({
