@@ -1,4 +1,5 @@
 import { IntroSection } from "@/components/intro-section";
+import { MissionSections } from "@/components/mission-sections";
 import { PublicationIndex } from "@/components/publication-index";
 import { PublishPanel } from "@/components/publish-panel";
 import { SiteFooter } from "@/components/site-footer";
@@ -10,6 +11,7 @@ export default function Home() {
       <SiteHeader />
       <main>
         <IntroSection />
+        <MissionSections />
         <PublicationIndex />
         <PublishPanel />
       </main>

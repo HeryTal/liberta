@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getLocale } from "@/lib/locale";
 import { translations } from "@/lib/translations";
 
@@ -12,7 +13,9 @@ export async function PublishPanel() {
       </div>
       <div className="publish-action">
         <p>{t.visibility}</p>
-        <span className="coming-soon">{t.formSoon}</span>
+        <Link className="coming-soon" href="/publier">
+          {t.formSoon}
+        </Link>
       </div>
     </section>
   );
