@@ -1,5 +1,5 @@
 # Liberta
-
+git clone -b black-friday --single-branch https://github.com/KlasslyOrg/webapp.git
 Plateforme publique de liberté d’expression pour Madagascar. Le projet privilégie
 la lecture sans compte, la publication anonyme et la collecte minimale de données.
 
